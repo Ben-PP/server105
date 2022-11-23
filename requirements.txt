@@ -2,6 +2,5 @@ fastapi
 python-multipart
 uvicorn
 python-jose
-# TODO not in use
 passlib[bcrypt]
 python-decouple
