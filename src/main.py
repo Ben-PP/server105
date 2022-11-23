@@ -3,7 +3,9 @@ from model import LoginSchema
 from auth.jwt_handler import sign_JWT
 from passlib.context import CryptContext
 from auth.jwt_bearer import jwtBearer
-import psql.psql as postgres
+from utils.init import init
+
+init()
 
 app = FastAPI()
 
@@ -17,10 +19,9 @@ dummy_content = [
     },
 ]
 
-@app.get("/psql", tags=["test"])
-def psql(table: str):
-    postgres.write(table=table)
-    return {"data": "It works"}
+@app.get("/ping", tags=["utils"])
+def ping():
+    return {"data": "Ping ok!"}
 
 @app.get("/test", dependencies=[Depends(jwtBearer())], tags=["test"])
 def get_test_post():
