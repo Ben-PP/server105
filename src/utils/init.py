@@ -27,7 +27,10 @@ def initDb():
         uid text PRIMARY KEY,
         amount NUMERIC(6, 2),
         timestamp TIMESTAMP WITH TIME ZONE
-    )
+    );
+    CREATE TABLE IF NOT EXISTS jwt_blacklist (
+        token text PRIMARY KEY
+    );
     """)
     cursor.close()
     conn.commit()

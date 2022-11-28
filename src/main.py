@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Body
-from model import LoginSchema
-from auth.jwt_handler import sign_JWT
+from model import LoginSchema,LogoutSchema
+from auth.jwt_handler import signJWT
 from passlib.context import CryptContext
 from auth.jwt_bearer import jwtBearer
 from utils.init import init
+import psycopg2
+from psql.blacklist_jwt import blacklist_jwt
 
 init()
 
@@ -36,10 +38,15 @@ def user_login(user: LoginSchema = Body(default=None)):
             correct_hash = line.split(":")[1].strip()
             if pwd_context.verify(user.password, correct_hash, "bcrypt"):
                 # TODO Log
-                return sign_JWT(user.username)
+                return signJWT(user.username)
                 
             else:
                 # TODO Log
                 return {
                     "error": "Invalid login details!"
                 }
+
+@app.post("/user/logout", tags=["user"])
+def user_logout(jwt: LogoutSchema = Body(default=None)):
+    token = jwt.jwt
+    blacklist_jwt(token)

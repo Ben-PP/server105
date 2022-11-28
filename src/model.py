@@ -10,3 +10,12 @@ class LoginSchema(BaseModel):
                 "password":"hashedpassword",
             }
         }
+
+class LogoutSchema(BaseModel):
+    jwt: str = Field(default=None)
+    class Config:
+        the_schema = {
+            "logout_demo": {
+                "jwt":"jwttoken",
+            }
+        }
