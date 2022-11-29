@@ -1,11 +1,10 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Body
+from fastapi import FastAPI, Depends, Body
 from model import LoginSchema,LogoutSchema
-from auth.jwt_handler import signJWT
 from passlib.context import CryptContext
 from auth.jwt_bearer import jwtBearer
 from utils.init import init
-import psycopg2
 from psql.blacklist_jwt import blacklist_jwt
+from psql.authenticate import authenticate_user
 
 init()
 
@@ -25,26 +24,17 @@ dummy_content = [
 def ping():
     return {"data": "Ping ok!"}
 
+@app.get("/validate-jwt", dependencies=[Depends(jwtBearer())], tags=["utils"])
+def get_test_post():
+    return {}
+
 @app.get("/test", dependencies=[Depends(jwtBearer())], tags=["test"])
 def get_test_post():
     return {"data": dummy_content}
 
-@app.post("/user/login", tags=["user"])
-def user_login(user: LoginSchema = Body(default=None)):
-    shadow = open("/etc/server105/shadow", "r")
-    pwd = pwd_context.hash(user.password)
-    for line in shadow:
-        if line.startswith(user.username):
-            correct_hash = line.split(":")[1].strip()
-            if pwd_context.verify(user.password, correct_hash, "bcrypt"):
-                # TODO Log
-                return signJWT(user.username)
-                
-            else:
-                # TODO Log
-                return {
-                    "error": "Invalid login details!"
-                }
+@app.post("/user/loginv2", tags=["user"])
+def user_loginv2(user: LoginSchema = Body(default=None)):
+    return authenticate_user(user.username, user.password)
 
 @app.post("/user/logout", tags=["user"])
 def user_logout(jwt: LogoutSchema = Body(default=None)):

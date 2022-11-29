@@ -1,13 +1,8 @@
 import psycopg2
+from psql.connect_db import connect_db
 
 def blacklist_jwt(jwt):
-    conn = psycopg2.connect(
-        dbname="db105",
-        user="admin",
-        password="optiplex",
-        host="172.16.160.116",
-        port="5432",
-    )
+    conn = connect_db()
     cursor: psycopg2.cursor = conn.cursor()
     cursor.execute(f"""
         INSERT INTO jwt_blacklist
@@ -15,3 +10,4 @@ def blacklist_jwt(jwt):
     """)
     cursor.close()
     conn.commit()
+    conn.close()

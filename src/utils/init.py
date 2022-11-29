@@ -1,8 +1,12 @@
 import psycopg2
+from passlib.context import CryptContext
+from psql.connect_db import connect_db
 
 def initDb():
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    admin_pwd = pwd_context.hash("admin")
     try:
-        conn = psycopg2.connect(dbname="db105", user="admin", password="optiplex", host="172.16.160.116", port="5432",)
+        conn = connect_db()
     except Exception as e:
         print("Error while connecting to database...")
         print(f"Error was:\n{e}")
@@ -12,11 +16,11 @@ def initDb():
     CREATE TABLE IF NOT EXISTS users (
         uid text PRIMARY KEY,
         name text NOT NULL,
-        pswd_hash text,
+        psswd_hash text,
         is_admin boolean NOT NULL
     );
-    INSERT INTO users (uid, name, pswd_hash, is_admin)
-    SELECT 'admin','admin','',true
+    INSERT INTO users (uid, name, psswd_hash, is_admin)
+    SELECT 'admin','admin','{admin_pwd}',true
     WHERE NOT EXISTS (SELECT * FROM users);
     CREATE TABLE IF NOT EXISTS budgets (
         uid text PRIMARY KEY,
@@ -34,6 +38,7 @@ def initDb():
     """)
     cursor.close()
     conn.commit()
+    conn.close()
 
 def init():
     print("Initializing...")
