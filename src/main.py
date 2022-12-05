@@ -40,3 +40,7 @@ def user_loginv2(user: LoginSchema = Body(default=None)):
 def user_logout(jwt: LogoutSchema = Body(default=None)):
     token = jwt.jwt
     blacklist_jwt(token)
+
+@app.post("/user/change-password", tags=["user"])
+def user_change_password():
+    pass # TODO change passwords
