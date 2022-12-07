@@ -15,12 +15,11 @@ def initDb():
     cursor.execute(f"""
     CREATE TABLE IF NOT EXISTS users (
         uid text PRIMARY KEY,
-        name text NOT NULL,
         psswd_hash text,
         is_admin boolean NOT NULL
     );
-    INSERT INTO users (uid, name, psswd_hash, is_admin)
-    SELECT 'admin','admin','{admin_pwd}',true
+    INSERT INTO users (uid, psswd_hash, is_admin)
+    SELECT 'admin','{admin_pwd}',true
     WHERE NOT EXISTS (SELECT * FROM users);
     CREATE TABLE IF NOT EXISTS budgets (
         uid text PRIMARY KEY,

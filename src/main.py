@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Depends, Body
-from model import LoginSchema,LogoutSchema
+from model import LoginSchema,LogoutSchema,ChangePwdSchema
 from passlib.context import CryptContext
 from auth.jwt_bearer import jwtBearer
 from utils.init import init
 from psql.blacklist_jwt import blacklist_jwt
 from psql.authenticate import authenticate_user
+from psql.change_password import change_password
 
 init()
 
@@ -41,6 +42,6 @@ def user_logout(jwt: LogoutSchema = Body(default=None)):
     token = jwt.jwt
     blacklist_jwt(token)
 
-@app.post("/user/change-password", tags=["user"])
-def user_change_password():
-    pass # TODO change passwords
+@app.post("/user/change-password", dependencies=[Depends(jwtBearer())], tags=["user"])
+def user_change_password(password: ChangePwdSchema = Body(default=None)):
+    change_password(password.uid, password.old_password, password.new_password)

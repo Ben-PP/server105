@@ -7,7 +7,7 @@ class LoginSchema(BaseModel):
         the_schema = {
             "login_demo": {
                 "username":"ben",
-                "password":"hashedpassword",
+                "password":"password",
             }
         }
 
@@ -17,5 +17,18 @@ class LogoutSchema(BaseModel):
         the_schema = {
             "logout_demo": {
                 "jwt":"jwttoken",
+            }
+        }
+
+class ChangePwdSchema(BaseModel):
+    uid: str = Field(default=None)
+    old_password: str = Field(default=None)
+    new_password: str = Field(default=None)
+    class Config:
+        the_schema = {
+            "change_pwd_demo": {
+                "uid":"ben",
+                "new_password":"oldpassword",
+                "new_password":"newpassword",
             }
         }
