@@ -28,7 +28,7 @@ class ChangePwdSchema(BaseModel):
         the_schema = {
             "change_pwd_demo": {
                 "uid":"ben",
-                "new_password":"oldpassword",
+                "old_password":"oldpassword",
                 "new_password":"newpassword",
             }
         }

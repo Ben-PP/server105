@@ -8,9 +8,9 @@ def authenticate_user(uid: str, pwd: str):
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     conn = connect_db()
     cursor: psycopg2.cursor = conn.cursor()
-    cursor.execute(f"""
-        SELECT psswd_hash FROM users WHERE uid = '{uid}';
-    """)
+    cursor.execute("""
+        SELECT psswd_hash FROM users WHERE uid = %s;
+    """,(uid,))
     fetch = cursor.fetchone()
     cursor.close()
     conn.close()
