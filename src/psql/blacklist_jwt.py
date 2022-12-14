@@ -1,5 +1,5 @@
 import psycopg2
-from psql.connect_db import connect_db
+from .connect_db import connect_db
 
 def blacklist_jwt(jwt):
     conn = connect_db()

@@ -21,13 +21,11 @@ class LogoutSchema(BaseModel):
         }
 
 class ChangePwdSchema(BaseModel):
-    uid: str = Field(default=None)
     old_password: str = Field(default=None)
     new_password: str = Field(default=None)
     class Config:
         the_schema = {
             "change_pwd_demo": {
-                "uid":"ben",
                 "old_password":"oldpassword",
                 "new_password":"newpassword",
             }

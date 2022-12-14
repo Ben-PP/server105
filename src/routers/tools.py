@@ -11,5 +11,5 @@ def ping():
     return {"data": "Ping ok!"}
 
 @router.get("/validate-jwt", dependencies=[Depends(jwt_bearer.jwtBearer())])
-def get_test_post():
+def validate_jwt():
     return {}

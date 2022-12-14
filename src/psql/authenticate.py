@@ -1,8 +1,8 @@
 import psycopg2
 from fastapi import HTTPException
 from passlib.context import CryptContext
-from auth.jwt_handler import signJWT
-from psql.connect_db import connect_db
+from jwt import jwt_handler
+from .connect_db import connect_db
 
 def authenticate_user(uid: str, pwd: str):
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -17,7 +17,7 @@ def authenticate_user(uid: str, pwd: str):
     if (fetch == None):
         raise HTTPException(status_code=401, detail="Unauthorized")
     if (pwd_context.verify(pwd, fetch[0], "bcrypt")):
-        return signJWT(uid)
+        return jwt_handler.signJWT(uid)
     else:
         raise HTTPException(status_code=401, detail="Unauthorized")
         
