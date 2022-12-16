@@ -20,7 +20,7 @@ def initDb():
         is_admin boolean NOT NULL
     );
     INSERT INTO users (uid, psswd_hash,can_make_transactions,is_admin)
-    SELECT 'admin','{admin_pwd}',true,true
+    SELECT 'admin','{admin_pwd}',false,true
     WHERE NOT EXISTS (SELECT * FROM users);
     CREATE TABLE IF NOT EXISTS budgets (
         uid text PRIMARY KEY,

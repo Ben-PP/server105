@@ -9,7 +9,7 @@ def authenticate_user(uid: str, pwd: str):
     conn = connect_db()
     cursor: psycopg2.cursor = conn.cursor()
     cursor.execute("""
-        SELECT psswd_hash FROM users WHERE uid = %s;
+        SELECT psswd_hash,is_admin FROM users WHERE uid = %s;
     """,(uid,))
     fetch = cursor.fetchone()
     cursor.close()
@@ -17,7 +17,10 @@ def authenticate_user(uid: str, pwd: str):
     if (fetch == None):
         raise HTTPException(status_code=401, detail="Unauthorized")
     if (pwd_context.verify(pwd, fetch[0], "bcrypt")):
-        return jwt_handler.signJWT(uid)
+        response_body = jwt_handler.signJWT(uid)
+        response_body.update({"is_admin":fetch[1]})
+        return response_body
+        #.update({"is_admin":fetch[0]})
     else:
         raise HTTPException(status_code=401, detail="Unauthorized")
         
