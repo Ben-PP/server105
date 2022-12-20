@@ -11,15 +11,6 @@ class LoginSchema(BaseModel):
             }
         }
 
-class LogoutSchema(BaseModel):
-    jwt: str = Field(default=None)
-    class Config:
-        the_schema = {
-            "logout_demo": {
-                "jwt":"jwttoken",
-            }
-        }
-
 class ChangePwdSchema(BaseModel):
     old_password: str = Field(default=None)
     new_password: str = Field(default=None)
@@ -52,5 +43,18 @@ class RemoveUserSchema(BaseModel):
         the_schema = {
             "RemoveUserSchemaDemo": {
                 "uid":"uid of the user to be removed",
+            }
+        }
+
+class EditUserSchema(BaseModel):
+    uid: str = Field(default=None)
+    can_make_transactions: bool = Field(default=None)
+    is_admin: bool =Field(default=None)
+    class Config:
+        the_schema = {
+            "EditUserSchemaDemo": {
+                "uid":"uid of the user to be edited",
+                "can_make_transactions":"bool",
+                "is_admin":"bool",
             }
         }

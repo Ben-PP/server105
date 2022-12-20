@@ -1,4 +1,3 @@
-import re
 import psycopg2,psycopg2.extras
 from fastapi import HTTPException
 from .connect_db import connect_db
