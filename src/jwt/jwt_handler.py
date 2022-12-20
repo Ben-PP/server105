@@ -1,7 +1,6 @@
 import time
 from jose import jwt
 from decouple import config
-import psycopg2
 from psql.connect_db import connect_db
 
 JWT_SECRET = config("jwt_secret")
@@ -36,3 +35,6 @@ def decodeJWT(token: str):
         return decode_token if decode_token["expiry"] >= time.time() else None
     except:
         return {}
+
+def getUid(token: str):
+    return decodeJWT(token)["user_id"]
