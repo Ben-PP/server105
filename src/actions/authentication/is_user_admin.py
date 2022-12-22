@@ -1,6 +1,6 @@
 import psycopg2
 from fastapi import HTTPException
-from .connect_db import connect_db
+from ..connect_db import connect_db
 
 def is_user_admin(uid: str) -> bool:
     conn = connect_db()
@@ -12,4 +12,4 @@ def is_user_admin(uid: str) -> bool:
     is_admin = cursor.fetchone()
     if (is_admin != None):
         return {"is_admin":is_admin[0],}
-    raise HTTPException(status_code=409, detail="User not found")
+    raise HTTPException(status_code=409, detail=f"User {uid} not found")

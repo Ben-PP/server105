@@ -1,6 +1,6 @@
 import psycopg2,psycopg2.extras
 from fastapi import HTTPException
-from .connect_db import connect_db
+from ..connect_db import connect_db
 
 def get_all_users(requester_uid):
     conn = connect_db()

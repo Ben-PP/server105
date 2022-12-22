@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 from fastapi import HTTPException
-from .connect_db import connect_db
+from ..connect_db import connect_db
 
 def change_password(uid: str, old_psswd: str, new_psswd: str):
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

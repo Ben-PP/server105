@@ -58,3 +58,18 @@ class EditUserSchema(BaseModel):
                 "is_admin":"bool",
             }
         }
+
+class BudgetSchema(BaseModel):
+    private_income: float = Field(default=None)
+    private_expense: float = Field(default=None)
+    public_income: float = Field(default=None)
+    public_expense: float = Field(default=None)
+    class Config:
+        the_schema = {
+            "BudgetSchemaDemo": {
+                "private_income":"Personal income of the user",
+                "private_expense":"Personal expense of the user",
+                "public_income":"Public income of the user",
+                "public_expense":"Public expense of the user",
+            }
+        }

@@ -1,7 +1,7 @@
 import re
 import psycopg2
 from fastapi import HTTPException
-from .connect_db import connect_db
+from ..connect_db import connect_db
 
 def remove_user(
     requester_uid: str,
