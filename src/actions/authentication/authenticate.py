@@ -2,7 +2,7 @@ import psycopg2
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from jwt import jwt_handler
-from .connect_db import connect_db
+from ..connect_db import connect_db
 
 def authenticate_user(uid: str, pwd: str):
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -20,7 +20,6 @@ def authenticate_user(uid: str, pwd: str):
         response_body = jwt_handler.signJWT(uid)
         response_body.update({"is_admin":fetch[1]})
         return response_body
-        #.update({"is_admin":fetch[0]})
     else:
         raise HTTPException(status_code=401, detail="Unauthorized")
         

@@ -1,7 +1,7 @@
 import time
 from jose import jwt
 from decouple import config
-from psql.connect_db import connect_db
+import actions
 
 JWT_SECRET = config("jwt_secret")
 JWT_ALGORITHM = config("jwt_algorithm")
@@ -20,7 +20,7 @@ def signJWT(user_id: str):
     return token_response(token)
 
 def decodeJWT(token: str):
-    conn = connect_db()
+    conn = actions.connect_db()
     cursor = conn.cursor()
     cursor.execute(f"""
         SELECT token FROM jwt_blacklist

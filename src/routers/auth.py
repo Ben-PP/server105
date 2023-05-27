@@ -1,9 +1,7 @@
 from fastapi import APIRouter,Body,Depends
 from model import LoginSchema
 from jwt import jwt_bearer,jwt_handler
-from psql.authenticate import authenticate_user
-from psql.blacklist_jwt import blacklist_jwt
-from psql.is_user_admin import is_user_admin
+from actions.authentication import *
 
 router = APIRouter(
     prefix="/auth",
