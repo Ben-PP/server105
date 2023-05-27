@@ -4,3 +4,4 @@ uvicorn
 python-jose
 passlib[bcrypt]
 python-decouple
+psycopg2

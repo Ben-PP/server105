@@ -76,3 +76,6 @@ def initDb():
 def init():
     print("Initializing...")
     initDb()
+
+if __name__ == "__main__":
+    init()
