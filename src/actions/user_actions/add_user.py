@@ -37,11 +37,9 @@ def add_user(
         VALUES (%s,%s,%s,%s);
     """,(uid,pwd_context.hash(pwd),can_make_transactions,is_admin,))
     cursor.execute("""
-        INSERT INTO private_budgets (uid,income,expense)
-        VALUES (%s,0,0);
-        INSERT INTO public_budgets (uid,income,expense)
-        VALUES (%s,0,0);
-    """,(uid,uid,))
+        INSERT INTO budgets (uid,public_income,public_expenses,private_income,private_expenses)
+        VALUES (%s,0,0,0,0);
+    """,(uid,))
     cursor.close()
     conn.commit()
     conn.close()

@@ -23,7 +23,17 @@ def budget_edit_budget(
         public_expense=budgets.public_expense,
     )
 
-@router.get("/get-budgets")
-def budget_get_budgets(jwt_token=Depends(jwt_bearer.jwtBearer())):
+@router.get("/get-private-budget")
+def get_private_budget(jwt_token=Depends(jwt_bearer.jwtBearer())):
     uid = jwt_handler.getUid(jwt_token)
-    return budget.get_budgets(uid=uid)
+    return budget.get_private_budget(uid=uid)
+
+@router.get("/get-public-budget")
+def get_public_budget(jwt_token=Depends(jwt_bearer.jwtBearer())):
+    uid = jwt_handler.getUid(jwt_token)
+    return budget.get_public_budget(uid=uid)
+
+@router.get("/get-house-budget")
+def get_house_budgets(jwt_token=Depends(jwt_bearer.jwtBearer())):
+    uid = jwt_handler.getUid(jwt_token)
+    return budget.get_house_budget(uid=uid)

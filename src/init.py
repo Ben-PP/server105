@@ -23,47 +23,27 @@ def initDb():
     SELECT 'admin','{admin_pwd}',false,true
     WHERE NOT EXISTS (SELECT * FROM users);
 
-    CREATE TABLE IF NOT EXISTS private_budgets (
+    CREATE TABLE IF NOT EXISTS budgets (
         uid text PRIMARY KEY,
-        income NUMERIC(6, 2),
-        expenses NUMERIC(6, 2),
-        CONSTRAINT fk_uid
-            FOREIGN KEY(uid)
-                REFERENCES users(uid)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE
+        public_income NUMERIC(6, 2),
+        public_expenses NUMERIC(6, 2),
+        private_income NUMERIC(6, 2),
+        private_expenses NUMERIC(6, 2),
+        FOREIGN KEY(uid)
+            REFERENCES users(uid)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
     );
-    CREATE TABLE IF NOT EXISTS public_budgets (
-        uid text PRIMARY KEY,
-        income NUMERIC(6, 2),
-        expenses NUMERIC(6, 2),
-        CONSTRAINT fk_uid
-            FOREIGN KEY(uid)
-                REFERENCES users(uid)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS private_transactions (
-        id text PRIMARY KEY,
+    CREATE TABLE IF NOT EXISTS transactions (
         uid text NOT NULL,
-        amount NUMERIC(6, 2) NOT NULL,
         timestamp TIMESTAMP NOT NULL,
-        CONSTRAINT fk_uid
-            FOREIGN KEY(uid)
-                REFERENCES private_budgets(uid)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS public_transactions (
-        id text PRIMARY KEY,
-        uid text NOT NULL,
         amount NUMERIC(6, 2) NOT NULL,
-        timestamp TIMESTAMP NOT NULL,
-        CONSTRAINT fk_uid
-            FOREIGN KEY(uid)
-                REFERENCES public_budgets(uid)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE
+        is_public boolean NOT NULL,
+        PRIMARY KEY(uid,timestamp),
+        FOREIGN KEY(uid)
+            REFERENCES budgets(uid)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
     );
     CREATE TABLE IF NOT EXISTS jwt_blacklist (
         token text PRIMARY KEY

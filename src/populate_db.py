@@ -8,10 +8,8 @@ from actions.connect_db import connect_db
 conn = connect_db()
 cursor = conn.cursor()
 cursor.execute("""
-    DROP TABLE IF EXISTS private_transactions;
-    DROP TABLE IF EXISTS public_transactions;
-    DROP TABLE IF EXISTS private_budgets;
-    DROP TABLE IF EXISTS public_budgets;
+    DROP TABLE IF EXISTS transactions;
+    DROP TABLE IF EXISTS budgets;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS jwt_blacklist;
 """)
@@ -38,36 +36,28 @@ cursor.execute(f"""
         ('{sara}','{sara_pwd}',true,true),
         ('{william}','{william_pwd}',true,false),
         ('{jolene}','{jolene_pwd}',false,false);
-    INSERT INTO private_budgets (uid,income,expenses)
+    INSERT INTO budgets (uid,public_income,public_expenses,private_income,private_expenses)
     VALUES
-        ('{ben}',100,50),
-        ('{sara}',30,10),
-        ('{william}',10,10),
-        ('{jolene}',0,0);
-    INSERT INTO public_budgets (uid,income,expenses)
+        ('{ben}',20,10,100,50),
+        ('{sara}',30,10,30,10),
+        ('{william}',0,10,10,10),
+        ('{jolene}',0,0,0,0);
+    INSERT INTO transactions (uid,amount, timestamp,is_public)
     VALUES
-        ('{ben}',20,10),
-        ('{sara}',30,10),
-        ('{william}',0,10),
-        ('{jolene}',0,0);
-    INSERT INTO private_transactions (id,uid,amount,timestamp)
-    VALUES
-        (1,'{ben}',10,'{date_time+timedelta(days=1)}'),
-        (2,'{ben}',10,'{date_time+timedelta(minutes=45)}'),
-        (3,'{ben}',-10,'{date_time+timedelta(minutes=30)}'),
-        (4,'{ben}',-20,'{date_time+timedelta(days=7)}'),
-        (5,'{ben}',-10,'{date_time+timedelta(days=6)}'),
-        (6,'{ben}',20,'{date_time+timedelta(days=2)}'),
-        (7,'{ben}',10,'{date_time+timedelta(days=5)}');
-    INSERT INTO public_transactions (id,uid,amount,timestamp)
-    VALUES
-        (1,'{ben}',10,'{date_time+timedelta(days=1)}'),
-        (2,'{sara}',10,'{date_time+timedelta(minutes=45)}'),
-        (3,'{sara}',-10,'{date_time+timedelta(minutes=30)}'),
-        (4,'{william}',-20,'{date_time+timedelta(days=7)}'),
-        (5,'{ben}',-10,'{date_time+timedelta(days=6)}'),
-        (6,'{william}',20,'{date_time+timedelta(days=2)}'),
-        (7,'{ben}',10,'{date_time+timedelta(days=5)}');
+        ('{ben}',10,'{date_time-timedelta(days=1)}',false),
+        ('{ben}',10,'{date_time-timedelta(minutes=45)}',false),
+        ('{ben}',-10,'{date_time-timedelta(minutes=30)}',false),
+        ('{ben}',-20,'{date_time-timedelta(days=7)}',false),
+        ('{ben}',-10,'{date_time-timedelta(days=6)}',false),
+        ('{ben}',20,'{date_time-timedelta(days=2)}',false),
+        ('{ben}',10,'{date_time-timedelta(days=5)}',false),
+        ('{ben}',10,'{date_time-timedelta(days=1,hours=1)}',true),
+        ('{sara}',10,'{date_time-timedelta(minutes=45)}',true),
+        ('{sara}',-10,'{date_time-timedelta(minutes=30)}',true),
+        ('{william}',-20,'{date_time-timedelta(days=7)}',true),
+        ('{ben}',-10,'{date_time-timedelta(days=6,hours=5)}',true),
+        ('{william}',20,'{date_time-timedelta(days=2)}',true),
+        ('{ben}',10,'{date_time-timedelta(days=5,hours=6)}',true);
 """)
 
 cursor.close()

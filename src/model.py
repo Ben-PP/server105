@@ -65,6 +65,7 @@ class BudgetSchema(BaseModel):
     public_income: float = Field(default=None)
     public_expense: float = Field(default=None)
     class Config:
+        # FIXME Rename expense as expenses
         the_schema = {
             "BudgetSchemaDemo": {
                 "private_income":"Personal income of the user",
