@@ -1,4 +1,5 @@
 from pydantic import BaseModel,Field
+from datetime import datetime
 
 class LoginSchema(BaseModel):
     username: str = Field(default=None)
@@ -72,5 +73,20 @@ class BudgetSchema(BaseModel):
                 "private_expense":"Personal expense of the user",
                 "public_income":"Public income of the user",
                 "public_expense":"Public expense of the user",
+            }
+        }
+
+class TransactionSchema(BaseModel):
+    uid: str = Field(default=None)
+    timestamp: datetime = Field(default=datetime.now())
+    amount: float = Field(default=None)
+    is_public: bool = Field(default=None)
+    class Config:
+        the_schema = {
+            "TransactionSchemaDemo": {
+                "uid": "User ID for the transaction",
+                "timestamp":"Time of the transaction",
+                "amount":"Amount of the transaction",
+                "is_public":"Is the transaction personal or public",
             }
         }

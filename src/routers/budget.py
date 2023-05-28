@@ -1,6 +1,6 @@
 from fastapi import APIRouter,Body,Depends
 from jwt import jwt_bearer, jwt_handler
-from model import BudgetSchema
+from model import BudgetSchema, TransactionSchema
 from actions import budget
 
 router = APIRouter(
@@ -9,11 +9,11 @@ router = APIRouter(
     dependencies=[Depends(jwt_bearer.jwtBearer())]
 )
 
+# TODO Rename routes to be more in line with good practises
 @router.put("/edit-budget", status_code=204)
 def budget_edit_budget(
-    budgets: BudgetSchema = Body(default=None),
-    jwt_token=Depends(jwt_bearer.jwtBearer()),
-):
+        budgets: BudgetSchema = Body(default=None),
+        jwt_token=Depends(jwt_bearer.jwtBearer()),):
     uid = jwt_handler.getUid(jwt_token)
     budget.edit_budget(
         uid=uid,
@@ -37,3 +37,14 @@ def get_public_budget(jwt_token=Depends(jwt_bearer.jwtBearer())):
 def get_house_budgets(jwt_token=Depends(jwt_bearer.jwtBearer())):
     uid = jwt_handler.getUid(jwt_token)
     return budget.get_house_budget(uid=uid)
+
+@router.post("/add-transaction")
+def add_transaction(
+        transaction: TransactionSchema = Body(default=None),
+        jwt_token=Depends(jwt_bearer.jwtBearer())):
+    uid = jwt_handler.getUid(jwt_token)
+    return budget.add_transaction(
+        uid=uid,
+        timestamp=transaction.timestamp,
+        amount=transaction.amount,
+        is_public=transaction.is_public)
